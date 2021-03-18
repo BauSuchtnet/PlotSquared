@@ -72,6 +72,7 @@ public class PlayerAutoPlotEvent extends PlotEvent implements CancellablePlotEve
 
     /**
      * Set the schematic string used in the claim.
+     * @param schematic schematic string
      */
     public void setSchematic(String schematic) {
         this.schematic = schematic;
