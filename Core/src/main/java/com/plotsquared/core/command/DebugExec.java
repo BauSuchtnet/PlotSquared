@@ -123,8 +123,15 @@ public class DebugExec extends SubCommand {
         if (this.engine != null) {
             return;
         }
+
         //create script engine manager
         ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+
+        // check if no script engines available
+        if(scriptEngineManager.getEngineFactories().isEmpty()) {
+            return;
+        }
+
         //create nashorn engine
         this.engine = scriptEngineManager.getEngineByName("nashorn");
         try {
