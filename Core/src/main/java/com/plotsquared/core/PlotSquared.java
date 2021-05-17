@@ -244,11 +244,11 @@ public class PlotSquared {
             // Check if we need to convert old flag values, etc
             if (!getConfigurationVersion().equalsIgnoreCase("v5")) {
                 // Perform upgrade
-                if (DBFunc.dbManager.convertFlags()) {
+                /*if (DBFunc.dbManager.convertFlags()) {
                     log(Captions.PREFIX.getTranslated() + "Flags were converted successfully!");
                     // Update the config version
                     setConfigurationVersion("v5");
-                }
+                }*/
             }
 
             // Comments

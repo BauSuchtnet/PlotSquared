@@ -53,7 +53,7 @@ public class Biome extends SetCommand {
             biome = BiomeTypes.get(value.toLowerCase());
         } catch (final Exception ignore) {
         }
-        if (biome == null) {
+        if (biome == null || biome.getId().contains("custom")) {
             String biomes = StringMan
                 .join(BiomeType.REGISTRY.values(), Captions.BLOCK_LIST_SEPARATOR.getTranslated());
             Captions.NEED_BIOME.send(player);

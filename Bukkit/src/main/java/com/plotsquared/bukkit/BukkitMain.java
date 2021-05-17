@@ -145,6 +145,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -245,9 +246,13 @@ public final class BukkitMain extends JavaPlugin implements Listener, IPlotMain<
             PlotSquared.log(Captions.PREFIX + "&6Couldn't verify purchase :(");
         }
 
+        PlotSquared.log(Captions.PREFIX + "starting impromptuPipeline");
         final UUIDPipeline impromptuPipeline = PlotSquared.get().getImpromptuUUIDPipeline();
+        PlotSquared.log(Captions.PREFIX + "starting backgroundPipeline");
         final UUIDPipeline backgroundPipeline = PlotSquared.get().getBackgroundUUIDPipeline();
+        PlotSquared.log(Captions.PREFIX + "finished both");
 
+        PlotSquared.log(Captions.PREFIX + "registering cacheuuidservice");
         // Services are accessed in order
         final CacheUUIDService cacheUUIDService =
             new CacheUUIDService(Settings.UUID.UUID_CACHE_SIZE);
@@ -255,6 +260,7 @@ public final class BukkitMain extends JavaPlugin implements Listener, IPlotMain<
         backgroundPipeline.registerService(cacheUUIDService);
         impromptuPipeline.registerConsumer(cacheUUIDService);
         backgroundPipeline.registerConsumer(cacheUUIDService);
+        PlotSquared.log(Captions.PREFIX + "registered cacheuuidservice");
 
         // Now, if the server is in offline mode we can only use profiles and direct UUID
         // access, and so we skip the player profile stuff as well as SquirrelID (Mojang lookups)
@@ -271,11 +277,13 @@ public final class BukkitMain extends JavaPlugin implements Listener, IPlotMain<
             backgroundPipeline.registerService(offlinePlayerUUIDService);
         }
 
+        PlotSquared.log(Captions.PREFIX + "finished both");
         final SQLiteUUIDService sqLiteUUIDService = new SQLiteUUIDService("user_cache.db");
 
         final SQLiteUUIDService legacyUUIDService;
         if (Settings.UUID.LEGACY_DATABASE_SUPPORT && MainUtil
             .getFile(PlotSquared.get().IMP.getDirectory(), "usercache.db").exists()) {
+            PlotSquared.log(Captions.PREFIX + "starting legacy support");
             legacyUUIDService = new SQLiteUUIDService("usercache.db");
         } else {
             legacyUUIDService = null;
@@ -301,6 +309,7 @@ public final class BukkitMain extends JavaPlugin implements Listener, IPlotMain<
         }
 
         if (!Settings.UUID.OFFLINE) {
+            PlotSquared.log(Captions.PREFIX + "starting paper conversion..");
             // If running Paper we'll also try to use their profiles
             if (Bukkit.getOnlineMode() && PaperLib.isPaper() && Settings.UUID.SERVICE_PAPER) {
                 final PaperUUIDService paperUUIDService = new PaperUUIDService();
@@ -309,12 +318,16 @@ public final class BukkitMain extends JavaPlugin implements Listener, IPlotMain<
                 PlotSquared
                     .log(Captions.PREFIX + "(UUID) Using Paper as a complementary UUID service");
             }
+            PlotSquared.log(Captions.PREFIX + "finished paper conversion..");
 
             impromptuPipeline.registerService(sqLiteUUIDService);
             backgroundPipeline.registerService(sqLiteUUIDService);
             impromptuPipeline.registerConsumer(sqLiteUUIDService);
             backgroundPipeline.registerConsumer(sqLiteUUIDService);
 
+            
+
+            PlotSquared.log(Captions.PREFIX + "registered sqllite..");
             if (legacyUUIDService != null) {
                 impromptuPipeline.registerService(legacyUUIDService);
                 backgroundPipeline.registerService(legacyUUIDService);

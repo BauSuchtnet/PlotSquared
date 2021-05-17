@@ -57,9 +57,6 @@ public class PlayerClaimPlotEvent extends PlotPlayerEvent implements Cancellable
         return this.schematic;
     }
 
-    /**
-     * Set the schematic string used in the claim.
-     */
     public void setSchematic(String schematic) {
         this.schematic = schematic;
     }

@@ -84,6 +84,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.IntConsumer;
@@ -970,7 +971,12 @@ public class MainUtil {
                 users.add(mapping.getUsername());
             }
         } catch (final Exception e) {
-            e.printStackTrace();
+            // we dont want to get a stacktrace everytime a player writes
+            // another player wrong since the player lookup is now case
+            // sensitive
+            if(!(e instanceof TimeoutException)) {
+                e.printStackTrace();
+            }
         }
 
         String c = Captions.PLOT_USER_LIST.getTranslated();
